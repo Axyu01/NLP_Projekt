@@ -137,6 +137,6 @@ if __name__ == "__main__":
     target_embed = torch.tensor(target_embed, dtype=torch.float32).to(toolkit.device)
     #target_embed.tolist()
 
-    toolkit.search(target_embed=target_embed,EPOCHS = 10,NEIGBOOR_SEARCH_NUM = 10,DEBUG=True)
+    toolkit.search(target_embed=target_embed,EPOCHS = 10,NEIGBOOR_SEARCH_NUM = 10,init_sentance="I love cats and I'm proud of it wtih all my heart!",DEBUG=True)
 
 
