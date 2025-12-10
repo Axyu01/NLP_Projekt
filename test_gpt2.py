@@ -23,10 +23,78 @@ class EmbedToolkit:
     # ======================
     #   FUNCTIONS
     # ======================
+    def rand_frag_remove(self,sentance):
+        LEN = len(sentance)
+        if LEN<=1:
+            return sentance
+        start = end = 0
+        while start == end:
+            start = random.randint(0, LEN - 1)
+            end = random.randint(0, LEN - 1)
 
-    def generate(self,start, end, input_ids,gready_probabilty = 0.2):
+        if start > end:
+            start, end = end, start
+        return sentance[0:start]+sentance[end:-1]
+    
+    def rand_frag_add(self,input_ids,gready_probabilty = 0.2,MAX_TOKEN_ADD = 10):
         model = self.model
         tokenizer = self.tokenizer
+        # random mutation range
+        LEN = len(input_ids[0])
+        start = token_add = 0
+
+        start = random.randint(0, LEN - 1)
+        token_add = random.randint(1, MAX_TOKEN_ADD)
+
+        # Move inputs to GPU
+        input_ids = input_ids.to(self.device)
+
+        # --- Split tokens ---
+        prefix_tokens = input_ids[:, :start]
+        suffix_tokens = input_ids[:, start:]
+
+        # --- GPT-2 input = suffix + prefix ---
+        gpt_input = torch.cat([suffix_tokens, prefix_tokens], dim=1)
+
+        # --- Generate additional content for fragment ---
+        gready = random.random() <= gready_probabilty
+        gen_output = model.generate(
+            gpt_input,
+            max_length=gpt_input.shape[1] + token_add,
+            do_sample=not gready,
+            temperature=1.6,
+            top_k=100,
+            top_p=0.95,
+            repetition_penalty=1.05,
+            pad_token_id=tokenizer.eos_token_id
+        )
+
+        # Only take newly generated tokens
+        generated_tokens = gen_output[:, gpt_input.shape[1]:]
+
+        # --- Reassemble final sentence ---
+        final_ids = torch.cat([prefix_tokens, generated_tokens, suffix_tokens], dim=1)
+
+        # Move back to CPU before decoding
+        final_sentence = tokenizer.decode(final_ids[0].cpu(), skip_special_tokens=True)
+
+        #print("Modified sentence:", final_sentence)
+        return final_sentence
+    
+    def generate(self,input_ids,gready_probabilty = 0.2):
+        model = self.model
+        tokenizer = self.tokenizer
+        # random mutation range
+        LEN = len(input_ids[0])
+        if LEN <=1:
+            tokenizer.decode(input_ids[0].cpu(), skip_special_tokens=True) 
+        start = end = 0
+        while start == end:
+            start = random.randint(0, LEN - 1)
+            end = random.randint(0, LEN - 1)
+
+        if start > end:
+            start, end = end, start
         # Move inputs to GPU
         input_ids = input_ids.to(self.device)
 
@@ -91,31 +159,43 @@ class EmbedToolkit:
         for i in range(EPOCHS):
             if(DEBUG):
                 print("EPOCH:", i)
-            input_ids = tokenizer(sentence, return_tensors="pt").input_ids.to(device)
-            LEN = len(input_ids[0])
 
+            for remove in range(1):   
+                solutions = []
+                evaluations = []
+                for s in range(NEIGBOOR_SEARCH_NUM//1):
+                    # create neighbor sentence
+                    solution = self.rand_frag_remove(sentence)
+
+                    solutions.append(solution)
+                    evaluations.append(self.evaluate(solution, target_embed))
+
+                # choose best neighbor
+                for s in range(len(solutions)):
+                    if sentance_eval < evaluations[s]:
+                        sentence = solutions[s]
+                        sentance_eval = evaluations[s]
+                        if(DEBUG):
+                            print("NEW BEST r:", sentence)
+            
+            input_ids = tokenizer(sentence, return_tensors="pt").input_ids.to(device)
             solutions = []
             evaluations = []
-
             for s in range(NEIGBOOR_SEARCH_NUM):
+                # create neighbor sentence
+                solution = self.generate(input_ids)
 
-                # random mutation range
-                start = end = 0
-                while start == end:
-                    start = random.randint(0, LEN - 1)
-                    end = random.randint(0, LEN - 1)
-
-                if start > end:
-                    start, end = end, start
+                solutions.append(solution)
+                evaluations.append(self.evaluate(solution, target_embed))
 
                 # create neighbor sentence
-                solution = self.generate(start, end, input_ids)
+                solution = self.rand_frag_add(input_ids)
 
                 solutions.append(solution)
                 evaluations.append(self.evaluate(solution, target_embed))
 
             # choose best neighbor
-            for s in range(NEIGBOOR_SEARCH_NUM):
+            for s in range(len(solutions)):
                 if sentance_eval < evaluations[s]:
                     sentence = solutions[s]
                     sentance_eval = evaluations[s]
@@ -125,18 +205,42 @@ class EmbedToolkit:
             print("FINAL:", sentence)
         return sentence
 
+import pandas as pd
+import os
+
+def read_entry(index):
+    base_path = "dataset"
+    train_path = os.path.join(base_path, "olid-training-v1.0.tsv")
+
+    train_df = pd.read_csv(train_path, sep="\t")
+    train_df = train_df[['tweet', 'subtask_a']].dropna()
+
+    label_map = {"NOT": 0, "OFF": 1}
+    labels = train_df['subtask_a'].map(label_map).tolist()
+    texts = train_df['tweet'].tolist()
+
+    print("Przykład tweeta:", texts[index])
+    print("Etykieta:", labels[index])
+
+    return texts[index]
+
 if __name__ == "__main__":
     toolkit = EmbedToolkit(INIT_GPT=True,INIT_ENCODER=True)
     embeddings = np.load("embeddings.npy")
     print("shape",embeddings.shape)
 
-    #target = "I hate coffee breaks..."
-    #target_embed = toolkit.embedding(target)
+    target = "I hate coffee breaks..."
+    target_embed = toolkit.embedding(target)
 
-    target_embed = embeddings[random.randint(0,embeddings.shape[0]),:]
+    index = random.randint(0,embeddings.shape[0])
+    print("INDEX:",index)
+    target_embed = embeddings[index,:]
+    read_entry(index)
+
+    
     target_embed = torch.tensor(target_embed, dtype=torch.float32).to(toolkit.device)
     #target_embed.tolist()
 
-    toolkit.search(target_embed=target_embed,EPOCHS = 10,NEIGBOOR_SEARCH_NUM = 10,init_sentance="I love cats and I'm proud of it wtih all my heart!",DEBUG=True)
+    toolkit.search(target_embed=target_embed,EPOCHS = 100,NEIGBOOR_SEARCH_NUM = 20,init_sentance="I love cats and I'm proud of it wtih all my heart!",DEBUG=True)
 
 
