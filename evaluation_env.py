@@ -9,10 +9,6 @@ from sklearn.metrics.pairwise import cosine_similarity
 from sentence_transformers import SentenceTransformer
 
 
-# --------------------------------------------------
-# 0. Wczytanie oryginalnych embeddingów i etykiet
-# --------------------------------------------------
-
 print("Wczytuję embeddingi i etykiety...")
 
 embeddings = np.load("embeddings.npy")
@@ -33,11 +29,6 @@ emb_min = embeddings[labels == MINORITY_CLASS]
 emb_maj = embeddings[labels == MAJORITY_CLASS]
 
 print(f"Liczba OFF: {len(emb_min)}, liczba NOT: {len(emb_maj)}")
-
-
-# --------------------------------------------------
-# BLOK A – funkcje do analizy SMOTE / MIXUP
-# --------------------------------------------------
 
 def nearest_original(point: np.ndarray, originals: np.ndarray):
     """
@@ -93,10 +84,6 @@ def escape_analysis(synth: np.ndarray):
     return stats, df
 
 
-# --------------------------------------------------
-# BLOK B – MiniLM + k-NN dla tekstów
-# --------------------------------------------------
-
 BASE_PATH = "dataset"
 TRAIN_PATH = os.path.join(BASE_PATH, "olid-training-v1.0.tsv")
 
@@ -111,10 +98,6 @@ texts = train_df["tweet"].tolist()
 labels_text = train_df["subtask_a"].map(label_map).to_numpy()
 
 print(f"Liczba tweetów w dataframe: {len(texts)}")
-
-# Zakładamy, że kolejność w embeddings.npy odpowiada kolejności w train_df
-
-
 print("Ładuję model MiniLM (do embedowania nowych tekstów)...")
 encoder = SentenceTransformer("sentence-transformers/all-MiniLM-L6-v2")
 
