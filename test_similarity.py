@@ -4,8 +4,8 @@ from sentence_transformers import util
 model = SentenceTransformer('sentence-transformers/all-MiniLM-L6-v2')
 
 texts = [
-    "Cat is sitting on a fance.",
-    "Cat is drinking on a fance.",
+    "Cat is sitting on a fence.",
+    "Cat is drinking on a fence.",
     "Cats like to eat human food."
 ]
 
