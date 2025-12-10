@@ -23,20 +23,16 @@ class EmbedToolkit:
     # ======================
     #   FUNCTIONS
     # ======================
-    def rand_frag_remove(self,sentance):
+    def rand_frag_remove(self,sentance,MAX_CHAR_REMOVE = 10):
         LEN = len(sentance)
         if LEN<=1:
             return sentance
-        start = end = 0
-        while start == end:
-            start = random.randint(0, LEN - 1)
-            end = random.randint(0, LEN - 1)
+        start = random.randint(0, LEN - 1)
+        end = random.randint(start+1, min(start+MAX_CHAR_REMOVE,LEN))
 
-        if start > end:
-            start, end = end, start
-        return sentance[0:start]+sentance[end:-1]
+        return sentance[:start]+sentance[end:]
     
-    def rand_frag_add(self,input_ids,gready_probabilty = 0.2,MAX_TOKEN_ADD = 10):
+    def rand_frag_add(self,input_ids,gready_probabilty = 0.2,MAX_TOKEN_ADD = 5):
         model = self.model
         tokenizer = self.tokenizer
         # random mutation range
@@ -81,20 +77,16 @@ class EmbedToolkit:
         #print("Modified sentence:", final_sentence)
         return final_sentence
     
-    def generate(self,input_ids,gready_probabilty = 0.2):
+    def generate(self,input_ids,gready_probabilty = 0.2,MAX_TOKEN_GEN = 5):
         model = self.model
         tokenizer = self.tokenizer
         # random mutation range
         LEN = len(input_ids[0])
         if LEN <=1:
-            tokenizer.decode(input_ids[0].cpu(), skip_special_tokens=True) 
-        start = end = 0
-        while start == end:
-            start = random.randint(0, LEN - 1)
-            end = random.randint(0, LEN - 1)
+            return tokenizer.decode(input_ids[0].cpu(), skip_special_tokens=True) 
+        start = random.randint(0, LEN - 1)
+        end = random.randint(start+1, min(start+MAX_TOKEN_GEN,LEN))
 
-        if start > end:
-            start, end = end, start
         # Move inputs to GPU
         input_ids = input_ids.to(self.device)
 
@@ -241,6 +233,6 @@ if __name__ == "__main__":
     target_embed = torch.tensor(target_embed, dtype=torch.float32).to(toolkit.device)
     #target_embed.tolist()
 
-    toolkit.search(target_embed=target_embed,EPOCHS = 100,NEIGBOOR_SEARCH_NUM = 20,init_sentance="I love cats and I'm proud of it wtih all my heart!",DEBUG=True)
+    toolkit.search(target_embed=target_embed,EPOCHS = 1000,NEIGBOOR_SEARCH_NUM = 10,init_sentance="I love cats and I'm proud of it wtih all my heart!",DEBUG=True)
 
 
