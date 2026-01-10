@@ -4,6 +4,8 @@ import numpy as np
 from transformers import GPT2LMHeadModel, GPT2Tokenizer
 from sentence_transformers import SentenceTransformer, util
 import CONSTANTS as CONST
+import pandas as pd
+import os
 
 class EmbedToolkit:
     def __init__(self,INIT_GPT = True,INIT_ENCODER = True):
@@ -178,10 +180,6 @@ class EmbedToolkit:
         if(DEBUG):
             print("FINAL:", sentence)
         return sentence
-
-import pandas as pd
-import os
-
 def read_entry(index):
     base_path = "dataset"
     train_path = os.path.join(base_path, "olid-training-v1.0.tsv")

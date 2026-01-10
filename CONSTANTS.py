@@ -3,9 +3,16 @@ SEED = 912457
 LLM_API_KEY = "123-Key-456"
 
 #Paths
-PATH_TEST_DATA = "/test_data/"
-PATH_TEST_DATA_OVERSAMPLING = "/test_data/oversampling/"
+PATH_TEST_DATA = "test_data/"
+
+PATH_TEST_DATA_OVERSAMPLING = PATH_TEST_DATA+"oversampling/"
+PATH_TEST_OS_TRAINING_DATA = PATH_TEST_DATA_OVERSAMPLING + "training_data.npz"
+PATH_TEST_OS_TEST_DATA = PATH_TEST_DATA_OVERSAMPLING + "test_data.npz"
+PATH_TEST_OS_LLM = PATH_TEST_DATA_OVERSAMPLING + "os_LLM.npz"
+
 PATH_TEST_DATA_RECONSTRUCTION = "/test_data/reconstruction"
+
+PATH_DATASET_FULL = "dataset/olid-training-v1.0.tsv"
 
 #Reconstruction algorithm
 REC_EPOCHS = 1000
@@ -13,3 +20,4 @@ REC_NEIGHBORS = 100
 
 #LLM Oversamler
 LLMO_K_NEIGHBORS = 5
+LLMO_SAMPLES = 10#3000
