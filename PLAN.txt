@@ -1,0 +1,45 @@
+------------------------
+Pytania do odpowiedzenia
+------------------------
+1) Czy możliwe jest odtworzenie tekstu po oversamplingu?
+2) Czy możliwy jest oversampling przy użyciu modeli językowych?
+3) Która metoda oversamplingu (SMOTE vs. LLM) daje lepsze wyniki? Ocena
+jakości po odtworzeniu w płaszczyźnie wektorowej, językowej i w zadaniu
+klasyfikacji?
+------------------------
+Testy do realizacji
+------------------------
+Pytanie 1:
+10 razy powtórzenie odtworzenia dla min 1 embeddingu tekstu.
+W tabelce wypisujemy  kolejno:
+oryginalny tekst,
+najlepszy tekst, podobienstwo cosinusowe najlepszego,
+najgorszy tekst, podobienstwo cosinusowe najgorszego,
+srednie podobienstwo cosinusowe, odchylenie standardowe z podobienstw
+
+Pytanie 2 i 3:
+Dzielimy caly zbior na testowy(20%?) i treningowy(80%?)
+Na treningowym robimy oversampling(SMOTE i LLM)
+Dla kazdego nowego datasetu(trening oryginal,SMOTE i LLM):
+Sprawdzamy za pomoca klasyfikacji 1-NN(dla klasy mniejszosciowej):
+Precision = TP / (TP + FP)
+Recall = TP / (TP + FN)
+F1-Score = 2 * (precision * recall) / (precision + recall)
+
+Pytanie 2:
+Wypisac kilka tekstow po oversamplingu wraz z obydwoma rodzicami i pokazac do jakiej klasy byly zaklasyfikowane.
+
+-----------------------
+Plan realizacji
+-----------------------
+CONSTANTS.py - zawiera wszystkie stale jak przerozne PATH_*,SEED, czy nawet parametry dla algorytmow
+
+test_reconstruction.py - zawiera test do rekonstrukcji,zapisuje i wczytuje jego wyniki oraz wyswietla rezultaty.(kazda rzecz osobna funkcja)
+
+test_oversampling.py - zawiera test do oversamplingu/klasyfikacji,zapisuje i wczytuje jego wyniki oraz wyswietla rezultaty.(kazda rzecz osobna funkcja)
+LLMOversampler.py - klasa zawierajaca metode do oversamplingu z dwoch rodzicow + zwracajaca zbior zoversamplowanych danych. Zapisuje je i je wczytuje.
+
+
+
+
+

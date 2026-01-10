@@ -3,6 +3,7 @@ import random
 import numpy as np
 from transformers import GPT2LMHeadModel, GPT2Tokenizer
 from sentence_transformers import SentenceTransformer, util
+import CONSTANTS as CONST
 
 class EmbedToolkit:
     def __init__(self,INIT_GPT = True,INIT_ENCODER = True):
@@ -214,6 +215,6 @@ if __name__ == "__main__":
     target_embed = torch.tensor(target_embed, dtype=torch.float32).to(toolkit.device)
     #target_embed.tolist()
 
-    toolkit.search(target_embed=target_embed,EPOCHS = 1000,NEIGHBOR_SEARCH_NUM = 10,init_sentence="I love cats and I'm proud of it with all my heart!",DEBUG=True)
+    toolkit.search(target_embed=target_embed,EPOCHS = CONST.REC_EPOCHS,NEIGHBOR_SEARCH_NUM = CONST.REC_NEIGHBORS,init_sentence="I love cats and I'm proud of it with all my heart!",DEBUG=True)
 
 
