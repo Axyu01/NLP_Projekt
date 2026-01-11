@@ -6,6 +6,7 @@ from sentence_transformers import SentenceTransformer, util
 from src.config import CONSTANTS as CONST
 import pandas as pd
 import os
+import CONSTANTS as CONST
 
 
 class EmbedToolkit:
@@ -92,6 +93,8 @@ class EmbedToolkit:
         suffix_tokens = input_ids[:, start:]
 
         gpt_input = torch.cat([suffix_tokens, prefix_tokens], dim=1)
+        if gpt_input.shape[1] == 0:
+            gpt_input = self.random_token_input()
 
         greedy = random.random() <= greedy_probability
         gen_output = model.generate(
@@ -113,7 +116,18 @@ class EmbedToolkit:
 
         # print("Modified sentence:", final_sentence)
         return final_sentence
+    
+    def random_token_input(self):
+        tokenizer = self.tokenizer
 
+        # pick a random token that is NOT special
+        while True:
+            token_id = random.randint(0, tokenizer.vocab_size - 1)
+            if token_id not in tokenizer.all_special_ids:
+                break
+
+        return torch.tensor([[token_id]], device=self.device)
+    
     def generate(self, input_ids, greedy_probability=0.2, MAX_TOKEN_GEN=5):
         """
         Zastępuje losowy fragment zdania nowym fragmentem
@@ -141,11 +155,13 @@ class EmbedToolkit:
         suffix_tokens = input_ids[:, end:]
 
         gpt_input = torch.cat([suffix_tokens, prefix_tokens], dim=1)
+        if gpt_input.shape[1] == 0:
+            gpt_input = self.random_token_input()
 
         greedy = random.random() <= greedy_probability
         gen_output = model.generate(
             gpt_input,
-            max_length=gpt_input.shape[1] + (end - start),
+            max_length=gpt_input.shape[1] + max((end - start),1),
             do_sample=not greedy,
             temperature=1.6,
             top_k=100,
@@ -232,12 +248,12 @@ class EmbedToolkit:
             if (DEBUG):
                 print("EPOCH:", i)
 
-            for remove in range(1):
+            for remove in range(CONST.REC_REMOVE_ITERATIONS):   
                 solutions = []
                 evaluations = []
-                for s in range(NEIGHBOR_SEARCH_NUM // 1):
+                for s in range(NEIGHBOR_SEARCH_NUM):
                     # create neighbor sentence
-                    solution = self.rand_frag_remove(sentence)
+                    solution = self.rand_frag_remove(sentence,MAX_CHAR_REMOVE=CONST.REC_MAX_CHAR_REMOVE)
 
                     solutions.append(solution)
                     evaluations.append(self.evaluate(solution, target_embed))
@@ -255,13 +271,13 @@ class EmbedToolkit:
             evaluations = []
             for s in range(NEIGHBOR_SEARCH_NUM):
                 # create neighbor sentence
-                solution = self.generate(input_ids)
+                solution = self.generate(input_ids,greedy_probability=CONST.REC_GREEDY_PROB,MAX_TOKEN_GEN=CONST.REC_MAX_TOKEN_GEN)
 
                 solutions.append(solution)
                 evaluations.append(self.evaluate(solution, target_embed))
 
                 # create neighbor sentence
-                solution = self.rand_frag_add(input_ids)
+                solution = self.rand_frag_add(input_ids,greedy_probability=CONST.REC_GREEDY_PROB,MAX_TOKEN_ADD=CONST.REC_MAX_TOKEN_ADD)
 
                 solutions.append(solution)
                 evaluations.append(self.evaluate(solution, target_embed))
