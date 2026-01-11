@@ -3,7 +3,7 @@ import random
 import numpy as np
 from transformers import GPT2LMHeadModel, GPT2Tokenizer
 from sentence_transformers import SentenceTransformer, util
-import CONSTANTS as CONST
+from src.config import CONSTANTS as CONST
 import pandas as pd
 import os
 
@@ -181,7 +181,7 @@ class EmbedToolkit:
             print("FINAL:", sentence)
         return sentence
 def read_entry(index):
-    base_path = "dataset"
+    base_path = "../../dataset"
     train_path = os.path.join(base_path, "olid-training-v1.0.tsv")
 
     train_df = pd.read_csv(train_path, sep="\t")
@@ -198,7 +198,7 @@ def read_entry(index):
 
 if __name__ == "__main__":
     toolkit = EmbedToolkit(INIT_GPT=True,INIT_ENCODER=True)
-    embeddings = np.load("embeddings.npy")
+    embeddings = np.load("../../data/processed/embeddings.npy")
     print("shape",embeddings.shape)
 
     target = "I hate coffee breaks..."

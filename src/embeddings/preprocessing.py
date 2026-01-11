@@ -7,7 +7,7 @@ from sklearn.manifold import TSNE
 import matplotlib.pyplot as plt
 
 
-base_path = "dataset"
+base_path = "../../dataset"
 train_path = os.path.join(base_path, "olid-training-v1.0.tsv")
 
 train_df = pd.read_csv(train_path, sep="\t")
@@ -28,8 +28,8 @@ embeddings = model.encode(texts, show_progress_bar=True)
 
 print("Embeddingi mają kształt:", embeddings.shape)
 
-np.save("embeddings.npy", embeddings)
-np.save("labels.npy", np.array(labels))
+np.save("../../data/processed/embeddings.npy", embeddings)
+np.save("../../data/processed/labels.npy", np.array(labels))
 
 print("Zapisano embeddings.npy i labels.npy")
 

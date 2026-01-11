@@ -3,8 +3,8 @@ from sklearn.neighbors import NearestNeighbors
 from sklearn.metrics.pairwise import cosine_similarity
 import random
 
-embeddings = np.load("embeddings.npy")
-labels = np.load("labels.npy")
+embeddings = np.load("../../data/processed/embeddings.npy")
+labels = np.load("../../data/processed/labels.npy")
 
 print("Załadowano:", embeddings.shape, labels.shape)
 
@@ -102,8 +102,8 @@ print("ANALIZA UCIECZEK DLA MIXUP")
 esc_mixup = escape_analysis(mixup_emb, emb_min, emb_maj)
 print(esc_mixup)
 
-np.save("smote_embeddings.npy", smote_emb)
-np.save("mixup_embeddings.npy", mixup_emb)
+np.save("../../data/synthetic/smote_embeddings.npy", smote_emb)
+np.save("../../data/synthetic/mixup_embeddings.npy", mixup_emb)
 
 print("\nZapisano smote_embeddings.npy i mixup_embeddings.npy.")
 

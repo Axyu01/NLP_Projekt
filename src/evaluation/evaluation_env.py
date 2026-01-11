@@ -11,11 +11,11 @@ from sentence_transformers import SentenceTransformer
 
 print("Wczytuję embeddingi i etykiety...")
 
-embeddings = np.load("embeddings.npy")
-labels = np.load("labels.npy")
+embeddings = np.load("../../data/processed/embeddings.npy")
+labels = np.load("../../data/processed/labels.npy")
 
-smote_emb = np.load("smote_embeddings.npy")
-mixup_emb = np.load("mixup_embeddings.npy")
+smote_emb = np.load("../../data/synthetic/smote_embeddings.npy")
+mixup_emb = np.load("../../data/synthetic/mixup_embeddings.npy")
 
 print("Kształt oryginalnych embeddingów:", embeddings.shape)
 print("Kształt etykiet:", labels.shape)
@@ -84,7 +84,7 @@ def escape_analysis(synth: np.ndarray):
     return stats, df
 
 
-BASE_PATH = "dataset"
+BASE_PATH = "../../dataset"
 TRAIN_PATH = os.path.join(BASE_PATH, "olid-training-v1.0.tsv")
 
 print("\nWczytuję tweety z OLID...")
