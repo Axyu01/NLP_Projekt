@@ -95,7 +95,7 @@ def escape_analysis(synth: np.ndarray):
     return stats, df
 
 
-BASE_PATH = "../../dataset"
+BASE_PATH = "../../data/raw"
 TRAIN_PATH = os.path.join(BASE_PATH, "olid-training-v1.0.tsv")
 
 print("\nWczytuję tweety z OLID...")
