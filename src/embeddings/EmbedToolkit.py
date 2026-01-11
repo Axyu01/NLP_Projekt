@@ -292,7 +292,7 @@ def read_entry(index):
         str
             Treść tweeta.
     """
-    base_path = "../../dataset"
+    base_path = "../../data/raw"
     train_path = os.path.join(base_path, "olid-training-v1.0.tsv")
 
     train_df = pd.read_csv(train_path, sep="\t")

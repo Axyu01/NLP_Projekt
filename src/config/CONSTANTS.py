@@ -12,7 +12,7 @@ PATH_TEST_OS_LLM = PATH_TEST_DATA_OVERSAMPLING + "os_LLM.npz"
 
 PATH_TEST_DATA_RECONSTRUCTION = "/test_data/reconstruction"
 
-PATH_DATASET_FULL = "../../dataset/olid-training-v1.0.tsv"
+PATH_DATASET_FULL = "../../data/raw/olid-training-v1.0.tsv"
 
 #Reconstruction algorithm
 REC_EPOCHS = 1000
