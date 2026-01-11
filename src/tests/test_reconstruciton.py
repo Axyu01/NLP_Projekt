@@ -1,5 +1,5 @@
-import CONSTANTS as CONST
-from EmbedToolkit import EmbedToolkit,read_entry
+from src.config import CONSTANTS as CONST
+from src.embeddings.EmbedToolkit import EmbedToolkit,read_entry
 import pandas as pd
 import numpy as np
 import random
@@ -24,7 +24,7 @@ if __name__ == "__main__":
     target_embed = embeddings[index,:]
     target = read_entry(index)
 
-    
+
     target_embed = torch.tensor(target_embed, dtype=torch.float32).to(toolkit.device)
     #target_embed.tolist()
 

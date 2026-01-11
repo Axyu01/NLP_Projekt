@@ -6,7 +6,6 @@ from sentence_transformers import SentenceTransformer, util
 from src.config import CONSTANTS as CONST
 import pandas as pd
 import os
-import CONSTANTS as CONST
 
 
 class EmbedToolkit:
