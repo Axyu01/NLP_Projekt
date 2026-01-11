@@ -1,5 +1,4 @@
-import evaluation_env as ev
-import matplotlib.pyplot as plt
+from src.evaluation import evaluation_env as ev
 
 texts = [
     "I hate you so much",
