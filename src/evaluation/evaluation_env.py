@@ -1,7 +1,3 @@
-# evaluation_env.py
-# BLOK A: analiza SMOTE i MIXUP
-# BLOK B: k-NN / wyszukiwanie podobnych tweetów (MiniLM)
-
 import os
 import numpy as np
 import pandas as pd
@@ -9,7 +5,22 @@ from sklearn.metrics.pairwise import cosine_similarity
 from sentence_transformers import SentenceTransformer
 
 
-print("Wczytuję embeddingi i etykiety...")
+"""
+BLOK A:
+    Analiza embeddingów syntetycznych (SMOTE, MIXUP):
+    - porównanie z oryginalnymi embeddingami
+    - wykrywanie tzw. "ucieczek" (escape), czyli sytuacji,
+      gdy embedding syntetyczny jest bliżej klasy większościowej
+      niż mniejszościowej
+
+BLOK B:
+    Narzędzia do wyszukiwania podobnych tweetów (k-NN)
+    oraz prostej klasyfikacji 1-NN w przestrzeni embeddingów.
+
+Plik może być:
+    - importowany jako moduł (funkcje z BLOKU B)
+    - uruchamiany jako skrypt (analiza SMOTE/MIXUP)
+"""
 
 embeddings = np.load("../../data/processed/embeddings.npy")
 labels = np.load("../../data/processed/labels.npy")

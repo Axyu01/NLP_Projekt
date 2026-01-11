@@ -4,6 +4,7 @@ from src.embeddings.EmbedToolkit import EmbedToolkit
 import pandas as pd
 import numpy as np
 from sklearn.model_selection import train_test_split
+
 def create_test_train_data(embed_toolkit):
     SEED = CONST.SEED
     data_path = CONST.PATH_DATASET_FULL

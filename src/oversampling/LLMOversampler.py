@@ -3,15 +3,43 @@ from src.config import CONSTANTS as CONST
 import numpy as np
 from groq import Groq
 
+
 class LLMOversampler:
-    def __init__(self,embed_toolkit):
+    """
+        Oversampler oparty o duży model językowy (LLM).
+
+        Klasa generuje nowe próbki tekstowe poprzez semantyczne
+        łączenie (mixing) dwóch istniejących przykładów tekstowych,
+        a następnie embeduje wygenerowane zdania.
+
+        Atrybuty:
+            client (Groq):
+                Klient API do komunikacji z LLM
+            embed_toolkit:
+                Obiekt zapewniający metody:
+                    - embedding(text)
+                    - evaluate(embedding_a, embedding_b)
+        """
+
+    def __init__(self, embed_toolkit):
         try:
-            self.client = Groq(api_key=CONST.LLM_API_KEY)   
-        except: 
+            self.client = Groq(api_key=CONST.LLM_API_KEY)
+        except:
             print("ERROR:No valid api key detected!")
         self.embed_toolkit = embed_toolkit
 
-    def oversample(self,parent1,parent2):
+    def oversample(self, parent1, parent2):
+        """
+        Generuje nową próbkę tekstową poprzez semantyczne zmieszanie
+        dwóch zdań wejściowych z użyciem LLM.
+
+        Args:
+            parent1 (str): pierwsze zdanie źródłowe
+            parent2 (str): drugie zdanie źródłowe
+
+        Returns:
+            str: wygenerowane zdanie syntetyczne
+        """
         response = self.client.chat.completions.create(
             model="llama-3.1-8b-instant",
             messages=[{"role": "user", "content": f"""
@@ -24,9 +52,26 @@ class LLMOversampler:
                        Just write one sentence that is a semantic mix of those sentences. no follow up. :\n1) {parent1}\n 2) {parent2}]"""}]
         )
         result = response.choices[0].message.content
-        print("OVERSAMPLED DATA:",result)
-        return result 
-    def get_k_neighbors(self, embeds, idx,k):
+        print("OVERSAMPLED DATA:", result)
+        return result
+
+    def get_k_neighbors(self, embeds, idx, k):
+        """
+        Znajduje k najbliższych sąsiadów danego embeddingu
+        na podstawie podobieństwa cosinusowego.
+
+        Args:
+            embeds (np.ndarray):
+                Tablica embeddingów o kształcie (N, D)
+            idx (int):
+                Indeks punktu odniesienia
+            k (int):
+                Liczba sąsiadów
+
+        Returns:
+            list[int]:
+                Lista indeksów k najbliższych sąsiadów
+        """
         distances = []
 
         for i, embed in enumerate(embeds):
@@ -41,8 +86,34 @@ class LLMOversampler:
         # zwróć indeksy k najbliższych
         k_neighbors = [i for i, d in distances[:k]]
         return k_neighbors
-    
-    def oversample_data(self,X,id_list,embed):
+
+    def oversample_data(self, X, id_list, embed):
+        """
+                Generuje zbiór syntetycznych próbek tekstowych
+                wraz z ich embeddingami i metadanymi rodziców.
+
+                Pipeline:
+                    - losowy wybór próbki
+                    - wybór k sąsiadów w embedding space
+                    - losowy wybór jednego sąsiada
+                    - generacja tekstu przez LLM
+                    - embedding nowej próbki
+
+                Args:
+                    X (list[str]):
+                        Lista tekstów źródłowych
+                    id_list (list[int]):
+                        Lista identyfikatorów próbek źródłowych
+                    embed (np.ndarray):
+                        Tablica embeddingów tekstów źródłowych
+
+                Returns:
+                    tuple:
+                        - samples (list[str]): wygenerowane teksty
+                        - embeds (list[np.ndarray]): embeddingi syntetyczne
+                        - parent1 (list[int]): ID pierwszego rodzica
+                        - parent2 (list[int]): ID drugiego rodzica
+        """
         size = len(X)
         samples = []
         embeds = []
@@ -50,13 +121,13 @@ class LLMOversampler:
         parent2 = []
         for s in range(CONST.LLMO_SAMPLES):
             print(s)
-            #pick random sample
+            # pick random sample
             rand_sample = random.randint(0, size - 1)
-            #pick n neigbors
-            neigbors = self.get_k_neighbors(embed,rand_sample,CONST.LLMO_K_NEIGHBORS)
-            #select one randomly
-            rand_neigbor = neigbors[random.randint(0,CONST.LLMO_K_NEIGHBORS-1)]
-            sample =self.oversample(X[rand_sample],X[rand_neigbor])
+            # pick n neigbors
+            neigbors = self.get_k_neighbors(embed, rand_sample, CONST.LLMO_K_NEIGHBORS)
+            # select one randomly
+            rand_neigbor = neigbors[random.randint(0, CONST.LLMO_K_NEIGHBORS - 1)]
+            sample = self.oversample(X[rand_sample], X[rand_neigbor])
             samples.append(sample)
             emb = self.embed_toolkit.embedding(sample)
             if hasattr(emb, 'cpu'):
@@ -66,9 +137,10 @@ class LLMOversampler:
             embeds.append(emb)
             parent1.append(id_list[rand_sample])
             parent2.append(id_list[rand_neigbor])
-        return samples,embeds,parent1,parent2
+        return samples, embeds, parent1, parent2
 
-if __name__ =="__main__":
-    et = None#EmbedToolkit(INIT_GPT=False,INIT_ENCODER=True)
+   # Przykładowe użycie
+if __name__ == "__main__":
+    et = None  # EmbedToolkit(INIT_GPT=False,INIT_ENCODER=True)
     llmos = LLMOversampler(et)
-    print(llmos.oversample("Kill all niggers","Buy me a coffee"))
+    print(llmos.oversample("Kill all niggers", "Buy me a coffee"))

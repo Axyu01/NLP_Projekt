@@ -22,9 +22,24 @@ print(f"Liczba OFF: {len(emb_min)}, liczba NOT: {len(emb_maj)}")
 
 def generate_smote_samples(embeddings_minority, num_samples, k=5):
     """
-    embeddings_minority : embeddingi klasy mniejszościowej
-    num_samples : ile sztucznych punktów wygenerować
-    k : ilu sąsiadów brać do SMOTE
+    Generuje syntetyczne embeddingi metodą SMOTE.
+
+    Algorytm:
+        - dla losowego punktu klasy mniejszościowej
+        - wybiera jednego z k najbliższych sąsiadów
+        - interpoluje liniowo między punktami
+
+    Args:
+        embeddings_minority (np.ndarray):
+            Embeddingi klasy mniejszościowej, shape (N, D)
+        num_samples (int):
+            Liczba syntetycznych punktów do wygenerowania
+        k (int):
+            Liczba sąsiadów branych pod uwagę (SMOTE)
+
+    Returns:
+        np.ndarray:
+            Tablica syntetycznych embeddingów, shape (num_samples, D)
     """
     nn = NearestNeighbors(n_neighbors=k+1).fit(embeddings_minority)
     distances, indices = nn.kneighbors(embeddings_minority)
@@ -45,6 +60,23 @@ def generate_smote_samples(embeddings_minority, num_samples, k=5):
 
 
 def generate_mixup_samples(embeddings_minority, num_samples):
+    """
+    Generuje syntetyczne embeddingi metodą MIXUP.
+
+    Algorytm:
+        - losuje parę punktów klasy mniejszościowej
+        - tworzy ich wypukłą kombinację liniową
+
+    Args:
+        embeddings_minority (np.ndarray):
+            Embeddingi klasy mniejszościowej, shape (N, D)
+        num_samples (int):
+            Liczba syntetycznych punktów do wygenerowania
+
+    Returns:
+        np.ndarray:
+            Tablica syntetycznych embeddingów, shape (num_samples, D)
+    """
     synthetic = []
     n = len(embeddings_minority)
 
@@ -66,12 +98,51 @@ print("Wygenerowano MIXUP:", mixup_emb.shape)
 
 
 def nearest_original(point, originals):
+    """
+    Znajduje najbliższy embedding w zbiorze oryginalnym
+    na podstawie podobieństwa cosinusowego.
+
+    Args:
+        point (np.ndarray):
+            Embedding syntetyczny, shape (D,)
+        originals (np.ndarray):
+            Embeddingi oryginalne, shape (N, D)
+
+    Returns:
+        tuple:
+            - idx (int): indeks najbliższego punktu
+            - sim (float): podobieństwo cosinusowe
+    """
     sims = cosine_similarity(point.reshape(1, -1), originals)[0]
     idx = sims.argmax()
     return idx, sims[idx]
 
 
 def escape_analysis(synthetic_points, original_min, original_maj):
+    """
+        Analiza "ucieczek" embeddingów syntetycznych.
+
+        Dla każdego punktu syntetycznego:
+            - znajduje najbliższy embedding OFF
+            - znajduje najbliższy embedding NOT
+            - sprawdza, czy punkt jest bliżej NOT niż OFF
+
+        Args:
+            synthetic_points (np.ndarray):
+                Embeddingi syntetyczne, shape (N, D)
+            original_min (np.ndarray):
+                Oryginalne embeddingi OFF
+            original_maj (np.ndarray):
+                Oryginalne embeddingi NOT
+
+        Returns:
+            dict:
+                Statystyki ucieczek:
+                    - escaped_count
+                    - escaped_percent
+                    - avg_sim_to_OFF
+                    - avg_sim_to_NOT
+    """
     escaped = 0
     sims_min = []
     sims_maj = []
