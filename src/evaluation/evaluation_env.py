@@ -1,7 +1,3 @@
-# evaluation_env.py
-# BLOK A: analiza SMOTE i MIXUP
-# BLOK B: k-NN / wyszukiwanie podobnych tweetów (MiniLM)
-
 import os
 import numpy as np
 import pandas as pd
@@ -9,13 +5,28 @@ from sklearn.metrics.pairwise import cosine_similarity
 from sentence_transformers import SentenceTransformer
 
 
-print("Wczytuję embeddingi i etykiety...")
+"""
+BLOK A:
+    Analiza embeddingów syntetycznych (SMOTE, MIXUP):
+    - porównanie z oryginalnymi embeddingami
+    - wykrywanie tzw. "ucieczek" (escape), czyli sytuacji,
+      gdy embedding syntetyczny jest bliżej klasy większościowej
+      niż mniejszościowej
 
-embeddings = np.load("embeddings.npy")
-labels = np.load("labels.npy")
+BLOK B:
+    Narzędzia do wyszukiwania podobnych tweetów (k-NN)
+    oraz prostej klasyfikacji 1-NN w przestrzeni embeddingów.
 
-smote_emb = np.load("smote_embeddings.npy")
-mixup_emb = np.load("mixup_embeddings.npy")
+Plik może być:
+    - importowany jako moduł (funkcje z BLOKU B)
+    - uruchamiany jako skrypt (analiza SMOTE/MIXUP)
+"""
+
+embeddings = np.load("../../data/processed/embeddings.npy")
+labels = np.load("../../data/processed/labels.npy")
+
+smote_emb = np.load("../../data/synthetic/smote_embeddings.npy")
+mixup_emb = np.load("../../data/synthetic/mixup_embeddings.npy")
 
 print("Kształt oryginalnych embeddingów:", embeddings.shape)
 print("Kształt etykiet:", labels.shape)
@@ -84,7 +95,7 @@ def escape_analysis(synth: np.ndarray):
     return stats, df
 
 
-BASE_PATH = "dataset"
+BASE_PATH = "../../data/raw"
 TRAIN_PATH = os.path.join(BASE_PATH, "olid-training-v1.0.tsv")
 
 print("\nWczytuję tweety z OLID...")

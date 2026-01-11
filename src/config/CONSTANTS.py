@@ -1,9 +1,9 @@
 #Misc
 SEED = 912457
-LLM_API_KEY = "123-Key-456"
+LLM_API_KEY = ""
 
 #Paths
-PATH_TEST_DATA = "test_data/"
+PATH_TEST_DATA = "../../test_data/"
 
 PATH_TEST_DATA_OVERSAMPLING = PATH_TEST_DATA+"oversampling/"
 PATH_TEST_OS_TRAINING_DATA = PATH_TEST_DATA_OVERSAMPLING + "training_data.npz"
@@ -12,11 +12,19 @@ PATH_TEST_OS_LLM = PATH_TEST_DATA_OVERSAMPLING + "os_LLM.npz"
 
 PATH_TEST_DATA_RECONSTRUCTION = "/test_data/reconstruction"
 
-PATH_DATASET_FULL = "dataset/olid-training-v1.0.tsv"
+PATH_DATASET_FULL = "../../data/raw/olid-training-v1.0.tsv"
 
 #Reconstruction algorithm
-REC_EPOCHS = 1000
-REC_NEIGHBORS = 100
+REC_TRIALS = 10
+
+REC_EPOCHS = 1_000#10_000
+REC_NEIGHBORS = 100#100
+REC_REMOVE_ITERATIONS = 3#1
+
+REC_MAX_TOKEN_ADD = 10#10#5
+REC_MAX_CHAR_REMOVE = 30#10#10
+REC_MAX_TOKEN_GEN = 10#10#5
+REC_GREEDY_PROB = 0.2#0.2
 
 #LLM Oversamler
 LLMO_K_NEIGHBORS = 5

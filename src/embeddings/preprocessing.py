@@ -7,7 +7,16 @@ from sklearn.manifold import TSNE
 import matplotlib.pyplot as plt
 
 
-base_path = "dataset"
+
+"""
+Skrypt do:
+- wczytania zbioru OLID,
+- wygenerowania embeddingów zdań (MiniLM),
+- zapisania embeddingów i etykiet,
+- analizy podobieństw cosinusowych,
+- wizualizacji embeddingów (t-SNE).
+"""
+base_path = "../../data/raw"
 train_path = os.path.join(base_path, "olid-training-v1.0.tsv")
 
 train_df = pd.read_csv(train_path, sep="\t")
@@ -28,8 +37,8 @@ embeddings = model.encode(texts, show_progress_bar=True)
 
 print("Embeddingi mają kształt:", embeddings.shape)
 
-np.save("embeddings.npy", embeddings)
-np.save("labels.npy", np.array(labels))
+np.save("../../data/processed/embeddings.npy", embeddings)
+np.save("../../data/processed/labels.npy", np.array(labels))
 
 print("Zapisano embeddings.npy i labels.npy")
 
@@ -39,15 +48,13 @@ sim_matrix = cosine_similarity(embeddings)
 print("Średnia podobieństw:", sim_matrix.mean())
 print("Mediana podobieństw:", np.median(sim_matrix))
 
-
-i = 0 
+i = 0
 closest = np.argsort(-sim_matrix[i])[1]
 
 print("\n=== Przykład najbliższego sąsiada ===")
 print("Tweet:", texts[i])
 print("Najbardziej podobny:", texts[closest])
 print("Podobieństwo:", sim_matrix[i, closest])
-
 
 X_2d = TSNE(n_components=2, perplexity=40, random_state=42).fit_transform(embeddings)
 
