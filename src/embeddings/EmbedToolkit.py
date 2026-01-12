@@ -27,10 +27,12 @@ class EmbedToolkit:
         if (INIT_GPT):
             self.tokenizer = GPT2Tokenizer.from_pretrained("gpt2")
             self.model = GPT2LMHeadModel.from_pretrained("gpt2").to(self.device)
+            self.model.eval()
 
         # Sentence Transformer – also moved to GPU if possible
         if (INIT_ENCODER):
             self.encoder = SentenceTransformer('sentence-transformers/all-MiniLM-L6-v2', device=self.device)
+            self.encoder.eval()
         print("Using device:", self.device)
 
     def rand_frag_remove(self, sentence, MAX_CHAR_REMOVE=10):
@@ -80,32 +82,37 @@ class EmbedToolkit:
         tokenizer = self.tokenizer
         # random mutation range
         LEN = len(input_ids[0])
-        start = token_add = 0
-
-        start = random.randint(0, LEN - 1)
+        start = 0
         token_add = random.randint(1, MAX_TOKEN_ADD)
+        if LEN >0:
+            start = random.randint(0, LEN - 1)
 
-        # Move inputs to GPU
-        input_ids = input_ids.to(self.device)
+            # Move inputs to GPU
+            input_ids = input_ids.to(self.device)
 
-        prefix_tokens = input_ids[:, :start]
-        suffix_tokens = input_ids[:, start:]
+            prefix_tokens = input_ids[:, :start]
+            suffix_tokens = input_ids[:, start:]
 
-        gpt_input = torch.cat([suffix_tokens, prefix_tokens], dim=1)
+            gpt_input = torch.cat([suffix_tokens, prefix_tokens], dim=1)
+        else:
+            prefix_tokens = torch.empty((1, 0), dtype=input_ids.dtype, device=self.device)
+            suffix_tokens = prefix_tokens
+            gpt_input = self.random_token_input().to(self.device)
         if gpt_input.shape[1] == 0:
-            gpt_input = self.random_token_input()
+            gpt_input = self.random_token_input().to(self.device)
 
         greedy = random.random() <= greedy_probability
-        gen_output = model.generate(
-            gpt_input,
-            max_length=gpt_input.shape[1] + token_add,
-            do_sample=not greedy,
-            temperature=1.6,
-            top_k=100,
-            top_p=0.95,
-            repetition_penalty=1.05,
-            pad_token_id=tokenizer.eos_token_id
-        )
+        with torch.no_grad():
+            gen_output = model.generate(
+                gpt_input,
+                max_length=gpt_input.shape[1] + token_add,
+                do_sample=not greedy,
+                temperature=1.6,
+                top_k=100,
+                top_p=0.95,
+                repetition_penalty=1.05,
+                pad_token_id=tokenizer.eos_token_id
+            )
 
         generated_tokens = gen_output[:, gpt_input.shape[1]:]
 
@@ -155,19 +162,20 @@ class EmbedToolkit:
 
         gpt_input = torch.cat([suffix_tokens, prefix_tokens], dim=1)
         if gpt_input.shape[1] == 0:
-            gpt_input = self.random_token_input()
+            gpt_input = self.random_token_input().to(self.device)
 
         greedy = random.random() <= greedy_probability
-        gen_output = model.generate(
-            gpt_input,
-            max_length=gpt_input.shape[1] + max((end - start),1),
-            do_sample=not greedy,
-            temperature=1.6,
-            top_k=100,
-            top_p=0.95,
-            repetition_penalty=1.05,
-            pad_token_id=tokenizer.eos_token_id
-        )
+        with torch.no_grad():
+            gen_output = model.generate(
+                gpt_input,
+                max_length=gpt_input.shape[1] + max((end - start),1),
+                do_sample=not greedy,
+                temperature=1.6,
+                top_k=100,
+                top_p=0.95,
+                repetition_penalty=1.05,
+                pad_token_id=tokenizer.eos_token_id
+            )
 
         generated_tokens = gen_output[:, gpt_input.shape[1]:]
 
@@ -192,7 +200,8 @@ class EmbedToolkit:
             Embedding zdania.
         """
         encoder = self.encoder
-        emb = encoder.encode(text, convert_to_tensor=True)
+        with torch.no_grad():
+            emb = encoder.encode(text, convert_to_tensor=True)
         return emb.to(self.device)
 
     def evaluate(self, solution, target_embed):
@@ -216,7 +225,7 @@ class EmbedToolkit:
         else:
             solution_embed = solution
 
-        return util.cos_sim(solution_embed, target_embed)
+        return util.cos_sim(solution_embed, target_embed).item()
 
     def search(self, target_embed, EPOCHS=100, NEIGHBOR_SEARCH_NUM=50,
                init_sentence="I love cats and I'm proud of it with all my heart!", DEBUG=False):
@@ -332,7 +341,7 @@ if __name__ == "__main__":
     target = "I hate coffee breaks..."
     target_embed = toolkit.embedding(target)
 
-    index = random.randint(0, embeddings.shape[0])
+    index = random.randint(0, embeddings.shape[0]-1)
     print("INDEX:", index)
     target_embed = embeddings[index, :]
     read_entry(index)
