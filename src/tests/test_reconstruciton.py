@@ -8,6 +8,11 @@ import torch
 def save_test_data():
     pass
 def load__test_data():
+    #n_tekstow*(tekst oryginalny,embed_or,10*(tekst odtworzony,embed_od))
+    #ntable = []
+    #for n in range(N_costam):
+    #    ntable.append(text_og,)
+    # return n_table
     pass
 
 

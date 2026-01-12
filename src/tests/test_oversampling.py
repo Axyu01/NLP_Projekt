@@ -4,7 +4,6 @@ from src.embeddings.EmbedToolkit import EmbedToolkit
 import pandas as pd
 import numpy as np
 from sklearn.model_selection import train_test_split
-
 def create_test_train_data(embed_toolkit):
     SEED = CONST.SEED
     data_path = CONST.PATH_DATASET_FULL
@@ -110,8 +109,7 @@ def load_LLM_OS_data():
     parent2_id = llm_data['parent2_id'].tolist()
     return samples,embeds,parent1_id,parent2_id
 
-
-if __name__ == "__main__":
+def LLM_main():
     embed_toolkit = EmbedToolkit(INIT_GPT=False,INIT_ENCODER=True)
     #create_test_train_data(embed_toolkit)
     #print("data created")
@@ -123,4 +121,9 @@ if __name__ == "__main__":
     samples,over_embeds,parent1_id,parent2_id= llm_oversampler.oversample_data(X_minority,id_minority,embeds_minority)
     save_LLM_OS_data(samples,over_embeds,parent1_id,parent2_id)
     samples,over_embeds,parent1_id,parent2_id = load_LLM_OS_data()
-    print()
+
+
+if __name__ == "__main__":
+    LLM_main()
+    
+    

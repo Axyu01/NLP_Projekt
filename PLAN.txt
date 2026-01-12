@@ -10,7 +10,7 @@ klasyfikacji?
 Testy do realizacji
 ------------------------
 Pytanie 1:
-10 razy powtórzenie odtworzenia dla min 1 embeddingu tekstu.
+10 razy powtórzenie odtworzenia dla min 1 tekstu.
 W tabelce wypisujemy  kolejno:
 oryginalny tekst,
 najlepszy tekst, podobienstwo cosinusowe najlepszego,
