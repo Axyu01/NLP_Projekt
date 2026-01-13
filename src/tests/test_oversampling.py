@@ -109,6 +109,32 @@ def load_LLM_OS_data():
     parent2_id = llm_data['parent2_id'].tolist()
     return samples,embeds,parent1_id,parent2_id
 
+def concat_LLM_OS_data():
+    llm_data = np.load(CONST.PATH_TEST_DATA_OVERSAMPLING + "os_LLM_1.npz", allow_pickle=True)
+    llm_data2 = np.load(CONST.PATH_TEST_DATA_OVERSAMPLING + "os_LLM_2.npz", allow_pickle=True)
+    llm_data3 = np.load(CONST.PATH_TEST_DATA_OVERSAMPLING + "os_LLM_3.npz", allow_pickle=True)
+
+    samples = llm_data['samples'].tolist()
+    samples += llm_data2['samples'].tolist()
+    samples += llm_data3['samples'].tolist()
+    embeds = llm_data['embeds'].tolist()
+    embeds += llm_data2['embeds'].tolist()
+    embeds += llm_data3['embeds'].tolist()
+    parent1_id = llm_data['parent1_id'].tolist()
+    parent1_id += llm_data2['parent1_id'].tolist()
+    parent1_id += llm_data3['parent1_id'].tolist()
+    parent2_id = llm_data['parent2_id'].tolist()
+    parent2_id += llm_data2['parent2_id'].tolist()
+    parent2_id += llm_data3['parent2_id'].tolist()
+
+    np.savez(
+        CONST.PATH_TEST_OS_LLM,
+        samples=np.array(samples, dtype=object),
+        embeds=np.array(embeds),
+        parent1_id=np.array(parent1_id),
+        parent2_id=np.array(parent2_id)
+    )
+
 def LLM_main():
     embed_toolkit = EmbedToolkit(INIT_GPT=False,INIT_ENCODER=True)
     #create_test_train_data(embed_toolkit)
@@ -124,6 +150,7 @@ def LLM_main():
 
 
 if __name__ == "__main__":
-    LLM_main()
+    concat_LLM_OS_data()
+    #LLM_main()
     
     
