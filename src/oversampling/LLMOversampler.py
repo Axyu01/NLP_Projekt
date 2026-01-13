@@ -68,6 +68,8 @@ Your sentance:
             messages=[{"role": "user", "content": prompt}]
         )
         result = response.choices[0].message.content
+        print("PARENT 1:",parent1)
+        print("PARENT2:",parent2)
         print("OVERSAMPLED DATA:", result)
         return result
 
