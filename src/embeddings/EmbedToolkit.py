@@ -316,7 +316,7 @@ def read_entry(index):
         str
             Treść tweeta.
     """
-    base_path = "data/raw"
+    base_path = "../../data/raw/"
     train_path = os.path.join(base_path, "olid-training-v1.0.tsv")
 
     train_df = pd.read_csv(train_path, sep="\t")
@@ -335,7 +335,7 @@ def read_entry(index):
 # przyklad:
 if __name__ == "__main__":
     toolkit = EmbedToolkit(INIT_GPT=True, INIT_ENCODER=True)
-    embeddings = np.load("data/processed/embeddings.npy")
+    embeddings = np.load("../../data/processed/embeddings.npy")
     print("shape", embeddings.shape)
 
     target = "I hate coffee breaks..."
