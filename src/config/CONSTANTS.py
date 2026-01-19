@@ -8,7 +8,7 @@ load_dotenv()
 LLM_API_KEY = os.getenv("LLM_API_KEY")
 
 #Paths
-PATH_TEST_DATA = "test_data/"
+PATH_TEST_DATA = "../../test_data/"
 
 PATH_TEST_DATA_OVERSAMPLING = PATH_TEST_DATA+"oversampling/"
 PATH_TEST_OS_TRAINING_DATA = PATH_TEST_DATA_OVERSAMPLING + "training_data.npz"
@@ -17,7 +17,7 @@ PATH_TEST_OS_LLM = PATH_TEST_DATA_OVERSAMPLING + "os_LLM.npz"
 
 PATH_TEST_DATA_RECONSTRUCTION = PATH_TEST_DATA +"reconstruction/reconstruction.pkl"
 
-PATH_DATASET_FULL = "data/raw/olid-training-v1.0.tsv"
+PATH_DATASET_FULL = "../../data/raw/olid-training-v1.0.tsv"
 
 #Reconstruction algorithm
 REC_TRIALS = 10
@@ -34,3 +34,6 @@ REC_GREEDY_PROB = 0.2#0.2
 #LLM Oversamler
 LLMO_K_NEIGHBORS = 5
 LLMO_SAMPLES = 1000#3000
+
+# SMOTE Oversampler
+PATH_TEST_OS_SMOTE = PATH_TEST_DATA_OVERSAMPLING + "os_SMOTE.npz"

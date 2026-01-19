@@ -148,9 +148,49 @@ def LLM_main():
     save_LLM_OS_data(samples,over_embeds,parent1_id,parent2_id)
     samples,over_embeds,parent1_id,parent2_id = load_LLM_OS_data()
 
+def save_SMOTE_OS_data(samples, embeds, parent1_id, parent2_id):
+    np.savez(
+        CONST.PATH_TEST_OS_SMOTE,
+        samples=np.array(samples, dtype=object),
+        embeds=np.array(embeds),
+        parent1_id=np.array(parent1_id),
+        parent2_id=np.array(parent2_id),
+    )
+
+def load_SMOTE_OS_data():
+    data = np.load(CONST.PATH_TEST_OS_SMOTE, allow_pickle=True)
+
+    return (
+        data["samples"].tolist(),
+        data["embeds"].tolist(),
+        data["parent1_id"].tolist(),
+        data["parent2_id"].tolist(),
+    )
+
+from src.oversampling.SMOTEOversampler import SMOTEOversampler
+
+def SMOTE_main():
+    X, y, embeds, id_list = load_train_data()
+
+    X_minority = [x for x, label in zip(X, y) if label == 1]
+    id_minority = [i for i, label in zip(id_list, y) if label == 1]
+    embeds_minority = [e for e, label in zip(embeds, y) if label == 1]
+
+    smote = SMOTEOversampler(k=5, seed=CONST.SEED)
+
+    samples, over_embeds, parent1_id, parent2_id = smote.oversample_data(
+        X_minority,
+        id_minority,
+        embeds_minority,
+        n_samples=len(embeds_minority)
+    )
+
+    save_SMOTE_OS_data(samples, over_embeds, parent1_id, parent2_id)
+
+    print("SMOTE oversampling finished")
+
 
 if __name__ == "__main__":
-    concat_LLM_OS_data()
+    # concat_LLM_OS_data()
     #LLM_main()
-    
-    
+    SMOTE_main()
