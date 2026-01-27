@@ -1,0 +1,114 @@
+PYTANIE 3C — PORÓWNANIE JĘZYKOWE: LLM vs SMOTE (PEŁNE TEKSTY)
+
+UWAGA: SMOTE nie generuje tekstu — tylko embedding (interpolacja). W tabeli SMOTE pokazujemy placeholder.
+
+------------------------------------------------------------
+METHOD: LLM | sim_to_p1=0.468668 | sim_to_p2=0.668457 | sim_avg=0.568563
+PARENT1 (id=91706):
+    Name the social injustices caused by the GOP and the death of anyone caused by members of it I dare you. How many people have lost their lives to the idiocy of gun control?
+
+PARENT2 (id=17581):
+ She is the size of a stadium
+
+SYNTHETIC:
+She is the size of a stadium where the idiocy of gun control led to countless lives lost due to the GOP's perpetuated social injustices.
+
+------------------------------------------------------------
+METHOD: LLM | sim_to_p1=0.414148 | sim_to_p2=0.195140 | sim_avg=0.304644
+PARENT1 (id=81503):
+  He is a total phony.
+
+PARENT2 (id=10087):
+ Gorgeous! And those tits are KILLER! ❤️
+
+SYNTHETIC:
+His fabricated boasts are stunning and really kill it.
+
+------------------------------------------------------------
+METHOD: LLM | sim_to_p1=0.266620 | sim_to_p2=0.342441 | sim_avg=0.304531
+PARENT1 (id=56071):
+ This isn't ya finest moment hun. Try again once you fix ya shit and knock this tweet away.
+
+PARENT2 (id=12221):
+     Antifa means anti-fascist". I'm not sure there is an Antifa organization, but there are millions who are anti-fascist.  Why are you not one of them?"
+
+SYNTHETIC:
+You're not doing your cause justice, mate, as your rant about anti-fascist activists seems misinformed on purpose.
+
+------------------------------------------------------------
+METHOD: LLM | sim_to_p1=0.301202 | sim_to_p2=0.307798 | sim_avg=0.304500
+PARENT1 (id=81733):
+My guess is 44 got it from those 100's of $bil of money he stole from #fanniemae that sat off balance as a slush fund in   see #fannieGate. URL  #ThursdayThoughts #Releasethetexts #NoRedactions #Obamagate #ObamaKnew #DrainTheDeepState   #MAGA URL
+
+PARENT2 (id=99720):
+ How to develop their competitive skills and social skills in Home Schooling...as my child too complain abt bullying and unjust behaviour of teachers since she is super active...
+
+SYNTHETIC:
+It seems this #Fanniemae scandal shows us how bullies can exploit their power, just like teachers who misuse their authority in classrooms.
+
+------------------------------------------------------------
+METHOD: LLM | sim_to_p1=0.136473 | sim_to_p2=-0.054401 | sim_avg=0.041036
+PARENT1 (id=20561):
+ Yeah no batman made him eat a rat and be was mostly like yo fuck this guy hes not cool hes a lunatic until dick also wants to get violent
+
+PARENT2 (id=41778):
+ Beautiful and sexy.. 😍😘
+
+SYNTHETIC:
+The social media influencer used derogatory terms to dissuade his critics, but her fans defended her as a stunning provocateur.
+
+------------------------------------------------------------
+METHOD: SMOTE | sim_to_p1=1.000000 | sim_to_p2=1.000000 | sim_avg=1.000000
+PARENT1 (id=75175):
+ Liberal Dictionary: -Illegal Immigrants: Dreamers -Trump Supporters: Deplorable -MS-13 Killers: Human Beings -Human Beings in the Womb: Not Human Beings -Antifa: Protestors -Law Abiding NRA Members: Terrorists -Bill Clinton: Feminist -Brett Kavanaugh: Predator
+
+PARENT2 (id=75175):
+ Liberal Dictionary: -Illegal Immigrants: Dreamers -Trump Supporters: Deplorable -MS-13 Killers: Human Beings -Human Beings in the Womb: Not Human Beings -Antifa: Protestors -Law Abiding NRA Members: Terrorists -Bill Clinton: Feminist -Brett Kavanaugh: Predator
+
+SYNTHETIC:
+[SMOTE_SYNTHETIC_FROM_75175_75175]
+
+------------------------------------------------------------
+METHOD: SMOTE | sim_to_p1=0.704902 | sim_to_p2=0.958735 | sim_avg=0.831819
+PARENT1 (id=60062):
+  Nothing was stolen. Crybaby liberals didn’t get what they wanted so they’ve been throwing temper tantrums for 2 years.
+
+PARENT2 (id=10008):
+ Because they have a corrupt liberal government that steals from the people. Liberals at work....
+
+SYNTHETIC:
+[SMOTE_SYNTHETIC_FROM_60062_10008]
+
+------------------------------------------------------------
+METHOD: SMOTE | sim_to_p1=0.673988 | sim_to_p2=0.989646 | sim_avg=0.831817
+PARENT1 (id=17661):
+      You are a dope. A delusional libtard. Ask the Govoner of Puerto Rico about the fantastic response by our President 
+
+PARENT2 (id=25519):
+ Bullshit. People died because of an incompetent government in Puerto Rico. And you can start with that mayor. Stop lying Gutierrez.
+
+SYNTHETIC:
+[SMOTE_SYNTHETIC_FROM_17661_25519]
+
+------------------------------------------------------------
+METHOD: SMOTE | sim_to_p1=0.696114 | sim_to_p2=0.967412 | sim_avg=0.831763
+PARENT1 (id=84321):
+ Has this guy got acorns in his cheeks or what. Lack of walking around sense is astonishing with liberals.
+
+PARENT2 (id=49622):
+100% agree with Trump on this.  Surprised to see so many liberals talk about how cute he was sneaking candy at a war criminal's funeral. URL
+
+SYNTHETIC:
+[SMOTE_SYNTHETIC_FROM_84321_49622]
+
+------------------------------------------------------------
+METHOD: SMOTE | sim_to_p1=0.998456 | sim_to_p2=0.291212 | sim_avg=0.644834
+PARENT1 (id=65536):
+// Rean's Arcane Gale is broken. If he is gonna be able to use that from scratch in Sen IV ( because of his demon form) it's gonna be cool  using it in every battle!
+
+PARENT2 (id=36326):
+ yeah but xenoblade sucks
+
+SYNTHETIC:
+[SMOTE_SYNTHETIC_FROM_65536_36326]
+

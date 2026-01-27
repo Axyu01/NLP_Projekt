@@ -1,0 +1,18 @@
+PYTANIE 1 — PODSUMOWANIE REKONSTRUKCJI
+
+Original index: 3047
+
+ORIGINAL TEXT:
+ Freaking casual fans say you are their favorite.
+
+BEST COSINE: 0.916530
+BEST TEXT:
+I'm'N fans say their
+" favorite I is my casual
+
+WORST COSINE: 0.725371
+WORST TEXT:
+I love ts has T in will always g d l I d b like to the i know t friends!" r a s so! no, d h c my  is  The mostd. proud of  an but people favorites  ? wh they e you not are mmy
+
+MEAN COSINE: 0.807716
+STD  COSINE: 0.044906

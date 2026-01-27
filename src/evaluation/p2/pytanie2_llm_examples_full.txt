@@ -1,0 +1,142 @@
+PYTANIE 2 — PRZYKŁADY OVERSAMPLINGU LLM (PEŁNE TEKSTY)
+
+--- EXAMPLE ---
+parent1_id: 91706 | sim_to_p1: 0.468668
+parent2_id: 17581 | sim_to_p2: 0.668457
+sim_avg: 0.568563
+
+PARENT 1 TEXT:
+    Name the social injustices caused by the GOP and the death of anyone caused by members of it I dare you. How many people have lost their lives to the idiocy of gun control?
+
+PARENT 2 TEXT:
+ She is the size of a stadium
+
+GENERATED TEXT:
+She is the size of a stadium where the idiocy of gun control led to countless lives lost due to the GOP's perpetuated social injustices.
+
+--- EXAMPLE ---
+parent1_id: 34690 | sim_to_p1: 0.742178
+parent2_id: 31646 | sim_to_p2: 0.366487
+sim_avg: 0.554332
+
+PARENT 1 TEXT:
+ You voted to trigger Article 50. You are complicit.
+
+PARENT 2 TEXT:
+ Mon « bye bitches » suffisait
+
+GENERATED TEXT:
+You voted to trigger Article 50; now your bye bitches is justified.
+
+--- EXAMPLE ---
+parent1_id: 76661 | sim_to_p1: 0.709191
+parent2_id: 23809 | sim_to_p2: 0.394421
+sim_avg: 0.551806
+
+PARENT 1 TEXT:
+ Hitler would be so proud of David Hogg URL
+
+PARENT 2 TEXT:
+ it does which sucks but honestly at least i can mute all the instances full of weirdos and just scope fed/local it's a treat
+
+GENERATED TEXT:
+Hitler would be so proud of David Hogg's ability to mute all the weirdos and just scope fed/local, but it sucks.
+
+--- EXAMPLE ---
+parent1_id: 81503 | sim_to_p1: 0.414148
+parent2_id: 10087 | sim_to_p2: 0.195140
+sim_avg: 0.304644
+
+PARENT 1 TEXT:
+  He is a total phony.
+
+PARENT 2 TEXT:
+ Gorgeous! And those tits are KILLER! ❤️
+
+GENERATED TEXT:
+His fabricated boasts are stunning and really kill it.
+
+--- EXAMPLE ---
+parent1_id: 56071 | sim_to_p1: 0.266620
+parent2_id: 12221 | sim_to_p2: 0.342441
+sim_avg: 0.304531
+
+PARENT 1 TEXT:
+ This isn't ya finest moment hun. Try again once you fix ya shit and knock this tweet away.
+
+PARENT 2 TEXT:
+     Antifa means anti-fascist". I'm not sure there is an Antifa organization, but there are millions who are anti-fascist.  Why are you not one of them?"
+
+GENERATED TEXT:
+You're not doing your cause justice, mate, as your rant about anti-fascist activists seems misinformed on purpose.
+
+--- EXAMPLE ---
+parent1_id: 81733 | sim_to_p1: 0.301202
+parent2_id: 99720 | sim_to_p2: 0.307798
+sim_avg: 0.304500
+
+PARENT 1 TEXT:
+My guess is 44 got it from those 100's of $bil of money he stole from #fanniemae that sat off balance as a slush fund in   see #fannieGate. URL  #ThursdayThoughts #Releasethetexts #NoRedactions #Obamagate #ObamaKnew #DrainTheDeepState   #MAGA URL
+
+PARENT 2 TEXT:
+ How to develop their competitive skills and social skills in Home Schooling...as my child too complain abt bullying and unjust behaviour of teachers since she is super active...
+
+GENERATED TEXT:
+It seems this #Fanniemae scandal shows us how bullies can exploit their power, just like teachers who misuse their authority in classrooms.
+
+--- EXAMPLE ---
+parent1_id: 67167 | sim_to_p1: 0.285483
+parent2_id: 99720 | sim_to_p2: 0.323501
+sim_avg: 0.304492
+
+PARENT 1 TEXT:
+ Crazy liberals
+
+PARENT 2 TEXT:
+ How to develop their competitive skills and social skills in Home Schooling...as my child too complain abt bullying and unjust behaviour of teachers since she is super active...
+
+GENERATED TEXT:
+Liberal students can also develop their competitive edge and social adaptability in unconventional learning environments, while dealing with peer prejudice and educator bias.
+
+--- EXAMPLE ---
+parent1_id: 15251 | sim_to_p1: 0.145824
+parent2_id: 91626 | sim_to_p2: -0.025458
+sim_avg: 0.060183
+
+PARENT 1 TEXT:
+ She never planned to testify. It was all an act - one that fell flat very quickly.  Liberals will never learn.   We know their tactics. We can accurately predict their actions &amp; responses. We also know how to think &amp; do research. That's why they hate us. They can't control us.
+
+PARENT 2 TEXT:
+ Lmao I have it too. Shitty quality but I don’t mind it either. The lowlands one sounds better 👍🏻
+
+GENERATED TEXT:
+"We can accurately predict the actions of those who use poor-quality content to troll us, but their attempts to provoke us always fall flat."
+
+--- EXAMPLE ---
+parent1_id: 93313 | sim_to_p1: -0.001573
+parent2_id: 46216 | sim_to_p2: 0.090059
+sim_avg: 0.044243
+
+PARENT 1 TEXT:
+  Right!!! Politics has no place in anyone's reproductive organs OR their sex lives!!!!
+
+PARENT 2 TEXT:
+     He had 1 offer since june! The shitty browns that's it!! Stop thinking he is still good you are living in the past
+
+GENERATED TEXT:
+This athlete appears to be struggling with relevance after being a relic of a bygone era.
+
+--- EXAMPLE ---
+parent1_id: 20561 | sim_to_p1: 0.136473
+parent2_id: 41778 | sim_to_p2: -0.054401
+sim_avg: 0.041036
+
+PARENT 1 TEXT:
+ Yeah no batman made him eat a rat and be was mostly like yo fuck this guy hes not cool hes a lunatic until dick also wants to get violent
+
+PARENT 2 TEXT:
+ Beautiful and sexy.. 😍😘
+
+GENERATED TEXT:
+The social media influencer used derogatory terms to dissuade his critics, but her fans defended her as a stunning provocateur.
+
