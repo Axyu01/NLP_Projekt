@@ -1,5 +1,5 @@
 Helpfull links:
-https://arxiv.org/abs/2205.12035?utm_source=chatgpt.com
+https://arxiv.org/abs/2205.12035
 
 //Ja uzylem tego
 pip install -U sentence-transformers
